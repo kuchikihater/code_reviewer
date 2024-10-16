@@ -1,5 +1,5 @@
 import requests
-import config
+import prompts
 import json
 from langchain_community.document_loaders import NotionDBLoader
 from langchain_core.prompts import HumanMessagePromptTemplate
@@ -14,6 +14,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 load_dotenv()
 
+
 def preprocess_code(content):
     lines = content.split('\n')
 
@@ -24,6 +25,7 @@ def preprocess_code(content):
         return processed_code
     else:
         return "No code found in the content."
+
 
 class Answered(BaseModel):
     suggestion: str = Field(description="Proposed correction or improvement")
@@ -125,11 +127,11 @@ def llm_code(data: list):
     docs = loader.load()
     print(docs[0].page_content)
     human_prompt = HumanMessagePromptTemplate.from_template(
-        config.prompt_template,
+        prompts.prompt_template,
     )
     prompt = ChatPromptTemplate.from_messages(
         [
-            config.system_message,
+            prompts.system_message,
             human_prompt,
         ]
     )
@@ -140,7 +142,7 @@ def llm_code(data: list):
     )
     chain = prompt | llm | parser
     for i in range(len(data)):
-        data[i]["content"] = config.preprocess_code(data[i].get('content'))
+        data[i]["content"] = prompts.preprocess_code(data[i].get('content'))
     response = chain.invoke(
         {
             "context": str(docs[0].page_content),

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-import dataset
+import config
 
 app = Flask(__name__)
 
@@ -8,8 +8,8 @@ app = Flask(__name__)
 def github_webhook():
     print('Webhook received:', request.json)
     data = request.json
-    files = dataset.get_full_code(data)
-    dataset.llm_code(files)
+    files = config.get_full_code(data)
+    config.llm_code(files)
 
     # dataset.llm_code(content)
     return jsonify({'status': 'success'}), 200
