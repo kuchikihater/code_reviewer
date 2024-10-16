@@ -138,11 +138,11 @@ def llm_code(data: list):
     llm = ChatOpenAI(
         api_key=os.getenv("OPENAI_API_KEY"),
         temperature=0,
-        model="gpt-4"
+        model="gpt-4o"
     )
     chain = prompt | llm | parser
     for i in range(len(data)):
-        data[i]["content"] = prompts.preprocess_code(data[i].get('content'))
+        data[i]["content"] = preprocess_code(data[i].get('content'))
     response = chain.invoke(
         {
             "context": str(docs[0].page_content),
