@@ -1,15 +1,12 @@
 import requests
 import prompts
-import json
 from langchain_community.document_loaders import NotionDBLoader
 from langchain_core.prompts import HumanMessagePromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_openai import ChatOpenAI
-import patchy
 from pydantic import BaseModel, Field, validator
 import os
 from dotenv import load_dotenv
-from unidiff import PatchSet
 from langchain_core.prompts import ChatPromptTemplate
 
 load_dotenv()
@@ -33,7 +30,7 @@ class Answered(BaseModel):
     file: str = Field("File name")
 
 
-class List_Suggestion(BaseModel):
+class ListSuggestion(BaseModel):
     suggestions: list[Answered] = Field(description="List of suggestions")
 
 
