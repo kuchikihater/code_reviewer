@@ -1,0 +1,71 @@
+2024-10-17 22:30:39,447 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 22:30:39,450 - INFO - get_pull_request_content() called
+2024-10-17 22:30:39,451 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6)
+2024-10-17 22:31:00,354 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 22:31:00,357 - INFO - get_pull_request_content() called
+2024-10-17 22:31:00,357 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 22:31:16,013 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 22:31:16,017 - INFO - get_pull_request_content() called
+2024-10-17 22:31:16,017 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 22:31:26,528 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 22:31:26,530 - INFO - get_pull_request_content() called
+2024-10-17 22:31:26,530 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 22:33:20,921 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 22:33:20,924 - INFO - get_pull_request_content() called
+2024-10-17 22:33:20,924 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:06:04,849 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:06:04,852 - INFO - get_notion_docs() called
+2024-10-17 23:06:08,735 - INFO - Loaded 3 document(s).
+2024-10-17 23:08:42,774 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:08:42,777 - INFO - get_notion_docs() called
+2024-10-17 23:08:45,815 - INFO - Loaded 3 document(s).
+2024-10-17 23:08:59,748 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:08:59,751 - INFO - get_notion_docs() called
+2024-10-17 23:09:03,121 - INFO - Loaded 3 document(s).
+2024-10-17 23:09:33,681 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:09:33,684 - INFO - get_notion_docs() called
+2024-10-17 23:09:36,367 - INFO - Loaded 3 document(s).
+2024-10-17 23:10:49,054 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:10:49,058 - INFO - llm_invoke() called
+2024-10-17 23:11:42,215 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:11:42,219 - INFO - llm_invoke() called
+2024-10-17 23:11:42,254 - INFO - get_pull_request_content() called
+2024-10-17 23:11:42,254 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:11:42,657 - INFO - get_notion_docs() called
+2024-10-17 23:11:44,816 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-17 23:11:44,816 - INFO - Loaded 1 document(s).
+2024-10-17 23:12:24,159 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:12:24,164 - INFO - llm_invoke() called
+2024-10-17 23:12:24,201 - INFO - get_pull_request_content() called
+2024-10-17 23:12:24,201 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:12:24,430 - INFO - get_notion_docs() called
+2024-10-17 23:12:27,622 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-17 23:12:27,623 - INFO - Loaded 1 document(s).
+2024-10-17 23:14:17,965 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:14:17,969 - INFO - llm_invoke() called
+2024-10-17 23:14:18,003 - INFO - get_pull_request_content() called
+2024-10-17 23:14:18,003 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:14:18,413 - INFO - get_notion_docs() called
+2024-10-17 23:14:20,567 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-17 23:14:20,568 - INFO - Loaded 1 document(s).
+2024-10-17 23:14:48,994 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:14:48,998 - INFO - llm_invoke() called
+2024-10-17 23:14:49,031 - INFO - get_pull_request_content() called
+2024-10-17 23:14:49,031 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:14:49,285 - INFO - get_notion_docs() called
+2024-10-17 23:14:51,195 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-17 23:14:51,195 - INFO - Loaded 1 document(s).
+2024-10-17 23:15:37,706 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:15:37,710 - INFO - llm_invoke() called
+2024-10-17 23:15:37,745 - INFO - get_pull_request_content() called
+2024-10-17 23:15:37,745 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:15:38,080 - INFO - get_notion_docs() called
+2024-10-17 23:15:40,744 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-17 23:15:40,745 - INFO - Loaded 1 document(s).
+2024-10-17 23:19:19,758 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-17 23:19:19,763 - INFO - llm_invoke() called
+2024-10-17 23:19:19,798 - INFO - get_pull_request_content() called
+2024-10-17 23:19:19,798 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-17 23:19:20,066 - INFO - get_notion_docs() called
+2024-10-17 23:19:22,247 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-17 23:19:22,247 - INFO - Loaded 1 document(s).

@@ -151,4 +151,3 @@ def get_notion_docs(
 
 # pp(get_pull_request_content('https://github.com/PJATK-ASI-2024/LAB-2_s22179/pull/1/files'))
 
-pp(get_notion_docs())
