@@ -26,7 +26,7 @@ class ListSuggestion(BaseModel):
     suggestions: list[Answered] = Field(description="List of suggestions")
 
 
-def llm_invoke(url: str):
+def first_review_invoke(url: str):
     """
     Invoke the LLM with the content of the pull request and additional context from Notion docs.
 
@@ -37,7 +37,6 @@ def llm_invoke(url: str):
         Response from the LLM after processing the input, or None in case of an error.
     """
     logger.info("llm_invoke() called")
-
 
     # Check if the OpenAI API key is available
     api_key = os.getenv("OPENAI_API_KEY")
@@ -92,4 +91,4 @@ def llm_invoke(url: str):
 
 
 # Test the function
-# pp(llm_invoke("https://github.com/kuchikihater/gruppirovka/pull/6/files#diff-fe417ff2fff8aa4043957482e5fa1f9d80971a52bf7f6f8389b9d67845055c47R4"))
+pp(first_review_invoke("https://github.com/kuchikihater/gruppirovka/pull/6/files#diff-fe417ff2fff8aa4043957482e5fa1f9d80971a52bf7f6f8389b9d67845055c47R4"))
