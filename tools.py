@@ -219,6 +219,58 @@ def get_pull_request_commits_content(url: str) -> Dict[str, Dict[str, str]]:
 
     return commits_info
 
+def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
+    """
+    Retrieves comments from a pull request along with the code they are related to and the comment's date.
+
+    Args:
+        url (str): The URL of the GitHub pull request.
+
+    Returns:
+        List[Dict[str, str]]: A list of dictionaries containing the comment text, code snippet, and the date.
+    """
+    logger.info('get_pull_request_comments() called')
+
+    # Retrieve the GitHub API key from environment variables
+    api_key = os.getenv("GITHUB_API_KEY")
+    if not api_key:
+        logger.error('GitHub API key not found in environment variables.')
+        raise EnvironmentError('GitHub API key not found in environment variables.')
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        'Authorization': f'Bearer {api_key}'
+    }
+
+    # Parse the URL to extract the owner, repository name, and pull request number
+    owner, repo, pull_number = parse_github_pull_request_url(url)
+
+    logger.info(f"Owner: {owner}, Repo: {repo}, Pull Number: {pull_number}")
+
+    # URL to get comments from the pull request
+    comments_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/comments"
+
+    # Make a request to GitHub API to get the comments
+    try:
+        response = requests.get(comments_url, headers=headers)
+        response.raise_for_status()  # Raise exception for unsuccessful requests
+        comments_data = response.json()  # Parse response as JSON
+    except requests.RequestException as e:
+        logger.error(f"Error fetching comments: {e}")
+        return []
+
+    # Process comments and collect the needed information
+    comments_info = []
+    for comment in comments_data:
+        comment_info = {
+            "filename": comment["path"],  # File related to the comment
+            "code": comment.get("diff_hunk", ""),  # Code related to the comment (diff hunk)
+            "comment": comment["body"],  # Text of the comment
+            "date": comment["updated_at"]  # Date when the comment was updated
+        }
+        comments_info.append(comment_info)
+
+    return comments_info
 
 def get_notion_docs(
         database_id: str = '120ffd2db62a800b843bd72e82ec59b1',
@@ -277,4 +329,4 @@ def get_notion_docs(
     return docs
 
 
-pp(get_pull_request_commits_content('https://github.com/kuchikihater/gruppirovka/pull/6'))
+pp(get_pull_request_content('https://github.com/kuchikihater/gruppirovka/pull/6'))

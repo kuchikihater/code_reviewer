@@ -36,13 +36,13 @@ def first_review_invoke(url: str):
     Returns:
         Response from the LLM after processing the input, or None in case of an error.
     """
-    logger.info("llm_invoke() called")
+    logger.info("first_review_invoke() called")
 
     # Check if the OpenAI API key is available
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         logger.error("OPENAI_API_KEY not found in environment variables.")
-        raise ("OPENAI_API_KEY is missing in the environment variables.")
+        raise "OPENAI_API_KEY is missing in the environment variables."
 
     # Initialize LLM and parser
     try:
@@ -88,7 +88,6 @@ def first_review_invoke(url: str):
     else:
         logger.error("Empty response from the LLM.")
         return None
-
 
 # Test the function
 pp(first_review_invoke("https://github.com/kuchikihater/gruppirovka/pull/6/files#diff-fe417ff2fff8aa4043957482e5fa1f9d80971a52bf7f6f8389b9d67845055c47R4"))

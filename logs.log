@@ -145,3 +145,27 @@
 2024-10-18 13:10:35,742 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
 2024-10-18 13:10:35,745 - INFO - get_pull_request_commits_content() called
 2024-10-18 13:10:35,746 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:39:48,970 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-18 13:39:48,974 - INFO - get_pull_request_comments() called
+2024-10-18 13:39:48,974 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:40:57,586 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-18 13:40:57,590 - INFO - get_pull_request_comments() called
+2024-10-18 13:40:57,590 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:41:47,607 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-18 13:41:47,611 - INFO - get_pull_request_comments() called
+2024-10-18 13:41:47,611 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:42:27,646 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-18 13:42:27,649 - INFO - get_pull_request_commits_content() called
+2024-10-18 13:42:27,649 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:43:07,041 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-18 13:43:07,044 - INFO - get_pull_request_content() called
+2024-10-18 13:43:07,044 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:43:35,753 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-18 13:43:35,756 - INFO - get_pull_request_content() called
+2024-10-18 13:43:35,756 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:43:40,424 - INFO - first_review_invoke() called
+2024-10-18 13:43:40,481 - INFO - get_pull_request_content() called
+2024-10-18 13:43:40,481 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-18 13:43:40,776 - INFO - get_notion_docs() called
+2024-10-18 13:43:43,902 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-18 13:43:43,903 - INFO - Loaded 1 document(s).
