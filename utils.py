@@ -4,6 +4,8 @@ import requests
 
 from logger_setup import logger
 
+import re
+
 
 def parse_github_pull_request_url(url: str) -> tuple[str, str, str]:
     """
@@ -37,7 +39,7 @@ def parse_github_pull_request_url(url: str) -> tuple[str, str, str]:
         raise ValueError('Invalid GitHub pull request URL.') from e
 
 
-def make_github_api_request(api_url, headers):
+def make_github_api_request(api_url:str , headers: dict) -> dict:
     """
     Makes a GET request to the GitHub API and handles possible errors.
 
@@ -69,3 +71,45 @@ def make_github_api_request(api_url, headers):
     except requests.exceptions.RequestException as e:
         logger.error(f'HTTP request failed: {e}')
         raise
+
+
+def preprocessing_code_pr(code: list) -> list:
+    """
+    Processes a list of dictionaries representing files and their content in a pull request diff format.
+    It removes specific diff markers, assigns line numbers to each line, and excludes lines starting with '-'.
+
+    Args:
+        code (List[Dict[str, str]]): A list of dictionaries where each dictionary represents a file with its content.
+
+    Returns:
+        List[Dict[str, List[Dict[str, str]]]]: A list of dictionaries where each dictionary contains the file name
+        and the list of its lines, each with a line number and content.
+    """
+    pattern_diff = re.compile(r"^(@@).*(@@)\n")
+    pattern_minus = re.compile(r"^-")  # Matches lines starting with '-'
+
+    # Iterate through each file in the code dictionary
+    for file in code:
+        # Remove diff markers (lines starting with '@@' and ending with '@@')
+        file_content = pattern_diff.sub("", file["content"])
+        lines = file_content.split("\n")
+
+        # Prepare to hold the new content with line numbers
+        new_content = []
+        count = 1
+
+        for line in lines:
+            line_numb = {
+                "line_number": count,
+                "content": line
+            }
+            if not pattern_minus.match(line):
+                count += 1
+            new_content.append(line_numb)  #
+
+        file["content"] = new_content
+
+    return code
+
+
+

@@ -10,7 +10,7 @@ from logger_setup import *
 from rich import print as pp
 from dotenv import load_dotenv
 
-from utils import parse_github_pull_request_url, make_github_api_request
+from utils import parse_github_pull_request_url, make_github_api_request, preprocessing_code_pr
 
 load_dotenv()
 
@@ -167,4 +167,4 @@ def get_notion_docs(
     return docs
 
 
-# pp(get_pull_request_content('https://github.com/kuchikihater/gruppirovka/pull/6'))
+pp(preprocessing_code_pr(get_pull_request_content('https://github.com/kuchikihater/gruppirovka/pull/6')))
