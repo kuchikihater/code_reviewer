@@ -169,3 +169,8 @@
 2024-10-18 13:43:40,776 - INFO - get_notion_docs() called
 2024-10-18 13:43:43,902 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
 2024-10-18 13:43:43,903 - INFO - Loaded 1 document(s).
+2024-10-21 18:10:35,686 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-21 18:10:35,695 - INFO - first_review_invoke() called
+2024-10-21 18:10:36,039 - INFO - get_pull_request_content() called
+2024-10-21 18:10:36,039 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
+2024-10-21 18:10:36,290 - ERROR - Pull request not found.

@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 log_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
-log_file = "logs.log"
+log_file = "logs/logs.log"
 
 file_handler = RotatingFileHandler(log_file, maxBytes=1_000_000, backupCount=5)
 file_handler.setFormatter(log_formatter)
