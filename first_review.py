@@ -89,5 +89,6 @@ def first_review_invoke(url: str):
         logger.error("Empty response from the LLM.")
         return None
 
+
 # Test the function
 pp(first_review_invoke("https://github.com/kuchikihater/gruppirovka/pull/6/files#diff-fe417ff2fff8aa4043957482e5fa1f9d80971a52bf7f6f8389b9d67845055c47R4"))

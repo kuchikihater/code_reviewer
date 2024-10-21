@@ -219,6 +219,7 @@ def get_pull_request_commits_content(url: str) -> Dict[str, Dict[str, str]]:
 
     return commits_info
 
+
 def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
     """
     Retrieves comments from a pull request along with the code they are related to and the comment's date.
@@ -271,6 +272,7 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
         comments_info.append(comment_info)
 
     return comments_info
+
 
 def get_notion_docs(
         database_id: str = '120ffd2db62a800b843bd72e82ec59b1',
@@ -329,4 +331,4 @@ def get_notion_docs(
     return docs
 
 
-pp(get_pull_request_content('https://github.com/kuchikihater/gruppirovka/pull/6'))
+# pp(get_pull_request_content('https://github.com/kuchikihater/gruppirovka/pull/6'))
