@@ -10,9 +10,101 @@ from logger_setup import *
 from rich import print as pp
 from dotenv import load_dotenv
 
-from utils import parse_github_pull_request_url, make_github_api_request, preprocessing_code_pr
+from utils import parse_github_pull_request_url, make_github_api_request, preprocessing_code_pr_new
+
+from datetime import datetime
 
 load_dotenv()
+
+
+def get_commit_details(owner: str, repo: str, sha: str, headers: Dict[str, str]) -> Dict[str, str]:
+    """
+    Retrieves detailed information about a specific commit in a GitHub repository.
+    Args:
+        owner (str): The repository owner.
+        repo (str): The repository name.
+        sha (str): The commit SHA identifier.
+        headers (Dict[str, str]): Headers for the GitHub API request.
+    Returns:
+        Dict[str, str]: A dictionary with commit details including the commit date and modified files.
+    """
+    commit_url = f'https://api.github.com/repos/{owner}/{repo}/commits/{sha}'
+    commit_response = requests.get(commit_url, headers=headers)
+
+    if commit_response.status_code == 200:
+        commit_details = commit_response.json()
+
+        commit_info = {
+            "commit_sha": sha,
+            "commit_date": commit_details['commit']['author']['date'],
+            "files": []
+        }
+
+        for file in commit_details.get('files', []):
+            file_info = {
+                "filename": file['filename'],
+                "changes": file.get('patch', 'No changes (binary file or new file)')
+            }
+            commit_info["files"].append(file_info)
+
+        return commit_info
+    else:
+        logger.error(f"Error fetching commit details for {sha}: {commit_response.status_code}, {commit_response.text}")
+        return {}
+
+
+def get_pull_request_commits_content(url: str) -> Dict[str, Dict[str, str]]:
+    """
+    Fetches commit details for a given pull request from a GitHub repository.
+    Args:
+        url (str): The URL of the GitHub pull request.
+    Returns:
+        Dict[str, Dict[str, str]]: A dictionary where each key is a commit SHA,
+        and each value is another dictionary containing details of that commit.
+    """
+    logger.info('get_pull_request_commits_content() called')
+
+    # Retrieve the GitHub API key from environment variables
+    api_key = os.getenv("GITHUB_API_KEY")
+    if not api_key:
+        logger.error('GitHub API key not found in environment variables.')
+        raise EnvironmentError('GitHub API key not found in environment variables.')
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        'Authorization': f'Bearer {api_key}'
+    }
+
+    # Parse the GitHub pull request URL to extract owner, repo, and pull number
+
+    owner, repo, pull_number = parse_github_pull_request_url(url)
+
+    logger.info(f"Owner: {owner}, Repo: {repo}, Pull Number: {pull_number}")
+
+    api_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/commits"
+
+    # Make the API request to GitHub
+    commits = make_github_api_request(api_url, headers)
+    if not commits:
+        logger.error(f'No commits were found at {api_url}')
+        return {}
+
+    commits_info = []
+
+    for commit in commits:
+        sha = commit.get("sha")
+        if not sha:
+            logger.warning("No SHA found for commit, skipping.")
+            continue
+
+        commit_info = get_commit_details(owner, repo, sha, headers)
+        if commit_info:
+            commits_info.append(commit_info)
+        else:
+            logger.error(f"Failed to retrieve details for commit {sha}")
+            raise
+
+    return commits_info
 
 
 # Needs to be changed to webhook in the future
@@ -82,7 +174,8 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
 
     headers = {
         "Accept": "application/vnd.github+json",
-        'Authorization': f'Bearer {api_key}'
+        'Authorization': f'Bearer {api_key}',
+        "X-GitHub-Api-Version": "2022-11-28"
     }
 
     # Parse the URL to extract the owner, repository name, and pull request number
@@ -90,15 +183,20 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
 
     logger.info(f"Owner: {owner}, Repo: {repo}, Pull Number: {pull_number}")
 
-    # URL to get comments from the pull request
-    comments_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/comments"
+    # URL to get code comments from the pull request
+    code_comments_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/comments"
 
-    # Make a request to GitHub API to get the comments
-    comments_data = make_github_api_request(comments_url, headers)
+    # URL to get general comments from the pull request (via issue comments API)
+    issue_comments_url = f"https://api.github.com/repos/{owner}/{repo}/issues/{pull_number}/comments"
 
-    # Process comments and collect the needed information
+    # Make a request to GitHub API to get both code and general comments
+    code_comments_data = make_github_api_request(code_comments_url, headers)
+    issue_comments_data = make_github_api_request(issue_comments_url, headers)
+
     comments_info = []
-    for comment in comments_data:
+
+    # Process code comments and collect the needed information
+    for comment in code_comments_data:
         comment_info = {
             "filename": comment["path"],  # File related to the comment
             "code": comment.get("diff_hunk", ""),  # Code related to the comment (diff hunk)
@@ -107,6 +205,16 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
         }
         comments_info.append(comment_info)
 
+    # Process general comments and collect the needed information
+    pp(issue_comments_data)
+    for comment in issue_comments_data:
+        comment_info = {
+            "filename": None,  # No file is associated with a general comment
+            "code": None,  # No code is associated with a general comment
+            "comment": comment["body"],  # Text of the comment
+            "date": comment["updated_at"]  # Date when the comment was updated
+        }
+        comments_info.append(comment_info)
     return comments_info
 
 
@@ -167,4 +275,23 @@ def get_notion_docs(
     return docs
 
 
-pp(preprocessing_code_pr(get_pull_request_content('https://github.com/kuchikihater/gruppirovka/pull/6')))
+def get_commits_before_date_comment(commits: List[Dict], date: datetime) -> List[Dict]:
+    """
+        Returns commits that were made before a given firts comment.
+
+        Args:
+            commits (List[Dict]): A list of commits with their metadata (e.g., commit date).
+            date (datetime): The date of the comment (in ISO format) to filter commits.
+
+        Returns:
+            List[Dict]: A list of commits made before the comment date.
+    """
+    filtered_commits = [commit for commit in commits if
+                        datetime.strptime(commit["commit_date"], '%Y-%m-%dT%H:%M:%SZ') < date]
+    return filtered_commits
+
+
+# commits = get_pull_request_commits_content('https://github.com/kuchikihater/code_reviewer/pull/1/files')
+comments = get_pull_request_comments('https://github.com/kuchikihater/code_reviewer/pull/1')
+pp(comments)
+

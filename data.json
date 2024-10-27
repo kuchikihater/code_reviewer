@@ -1,0 +1,40 @@
+[
+    {
+        "task_name": "Группировка пользователей по возрасту",
+        "url": "https://github.com/CorporationX/god_bless/pull/11100",
+        "content": [
+            {
+                "2024-10-03T15:58:47Z": [
+                    [
+                        {
+                            "filename": "src/main/java/groupUsersByAge/Main.java",
+                            "changes": "@@ -0,0 +1,6 @@\n+package groupUsersByAge;\n+\n+public class Main {\n+    public static void main(String[] args) {\n+    }\n+}"
+                        },
+                        {
+                            "filename": "src/main/java/groupUsersByAge/User.java",
+                            "changes": "@@ -0,0 +1,39 @@\n+package groupUsersByAge;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+@ToString\n+public class User {\n+    private String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsersByAge(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+        for (User user : users) {\n+            if (user.getAge() < 1) {\n+                throw new IllegalArgumentException(\"Incorrect age value\");\n+            }\n+            if (groupedUsers.containsKey(user.getAge())) {\n+                groupedUsers.get(user.getAge()).add(user);\n+            } else {\n+                List<User> userList = new ArrayList<>();\n+                userList.add(user);\n+                groupedUsers.put(user.getAge(), userList);\n+            }\n+        }\n+        return groupedUsers;\n+    }\n+}"
+                        },
+                        {
+                            "filename": "src/test/java/GroupUsersByAgeTest.java",
+                            "changes": "@@ -0,0 +1,48 @@\n+import groupUsersByAge.User;\n+import org.junit.jupiter.api.BeforeEach;\n+import org.junit.jupiter.api.Test;\n+\n+import java.util.ArrayList;\n+import java.util.List;\n+import java.util.Map;\n+\n+import static org.junit.jupiter.api.Assertions.assertEquals;\n+import static org.junit.jupiter.api.Assertions.assertThrows;\n+import static org.junit.jupiter.api.Assertions.assertTrue;\n+\n+public class GroupUsersByAgeTest {\n+    public static List<User> ungroupedUserList;\n+\n+    @BeforeEach\n+    void setup() {\n+        ungroupedUserList = new ArrayList<>();\n+    }\n+\n+    @Test\n+    void testGroupUsers() {\n+        User userVasya = new User(\"Vasya\", 21, \"Google\", \"house1\");\n+        User userKolya = new User(\"Kolya\", 21, \"Apple\", \"house2\");\n+        User userSanya = new User(\"Sanya\", 24, \"Sony\", \"house14\");\n+        ungroupedUserList.add(userVasya);\n+        ungroupedUserList.add(userKolya);\n+        ungroupedUserList.add(userSanya);\n+\n+        Map<Integer, List<User>> groupedUsers = User.groupUsersByAge(ungroupedUserList);\n+\n+        assertTrue(groupedUsers.get(21).contains(userVasya));\n+        assertTrue(groupedUsers.get(21).contains(userKolya));\n+        assertTrue(groupedUsers.get(24).contains(userSanya));\n+\n+        assertEquals(2, groupedUsers.size());\n+    }\n+\n+    @Test\n+    void testExceptionThrowsWithIncorrectUserData() {\n+        User userVasya = new User(\"Vasya\", 21, \"Google\", \"house1\");\n+        User userVanya = new User(\"Vanya\", 0, \"Google\", \"house1\");\n+        ungroupedUserList.add(userVasya);\n+        ungroupedUserList.add(userVanya);\n+\n+        assertThrows(IllegalArgumentException.class, () -> User.groupUsersByAge(ungroupedUserList));\n+    }\n+}"
+                        }
+                    ]
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "filename": "src/main/java/groupUsersByAge/User.java",
+                "code": "@@ -0,0 +1,39 @@\n+package groupUsersByAge;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+@ToString\n+public class User {\n+    private String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsersByAge(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+        for (User user : users) {\n+            if (user.getAge() < 1) {\n+                throw new IllegalArgumentException(\"Incorrect age value\");\n+            }\n+            if (groupedUsers.containsKey(user.getAge())) {\n+                groupedUsers.get(user.getAge()).add(user);\n+            } else {\n+                List<User> userList = new ArrayList<>();\n+                userList.add(user);\n+                groupedUsers.put(user.getAge(), userList);\n+            }",
+                "comment": "Да, это верно, но можно сделать код лаконичней. Попробуй использовать метод класса Map putIfAbsent",
+                "date": "2024-10-03T20:02:27Z"
+            },
+            {
+                "filename": "src/main/java/groupUsersByAge/User.java",
+                "code": "@@ -0,0 +1,39 @@\n+package groupUsersByAge;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+@ToString\n+public class User {\n+    private String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsersByAge(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+        for (User user : users) {\n+            if (user.getAge() < 1) {\n+                throw new IllegalArgumentException(\"Incorrect age value\");\n+            }",
+                "comment": "валидацию можно вынести в отдельный метод)",
+                "date": "2024-10-03T20:02:27Z"
+            }
+        ]
+    }
+]
