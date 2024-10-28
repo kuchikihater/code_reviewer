@@ -198,6 +198,11 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
 
     logger.info(f"Owner: {owner}, Repo: {repo}, Pull Number: {pull_number}")
 
+    # Fetch pull request details to get the creator's username
+    pr_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}"
+    pull_request_data = make_github_api_request(pr_url, headers)
+    pr_creator = pull_request_data["user"]["login"]
+
     # URL to get code comments from the pull request
     code_comments_url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/comments"
 
@@ -212,24 +217,26 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
 
     # Process code comments and collect the needed information
     for comment in code_comments_data:
-        comment_info = {
-            "filename": comment["path"],  # File related to the comment
-            "code": comment.get("diff_hunk", ""),  # Code related to the comment (diff hunk)
-            "comment": comment["body"],  # Text of the comment
-            "date": comment["updated_at"]  # Date when the comment was updated
-        }
-        comments_info.append(comment_info)
+        if comment["user"]["login"] != pr_creator:
+            comment_info = {
+                "filename": comment["path"],  # File related to the comment
+                "code": comment.get("diff_hunk", ""),  # Code related to the comment (diff hunk)
+                "comment": comment["body"],  # Text of the comment
+                "date": comment["updated_at"]  # Date when the comment was updated
+            }
+            comments_info.append(comment_info)
 
     # Process general comments and collect the needed information
     pp(issue_comments_data)
     for comment in issue_comments_data:
-        comment_info = {
-            "filename": None,  # No file is associated with a general comment
-            "code": None,  # No code is associated with a general comment
-            "comment": comment["body"],  # Text of the comment
-            "date": comment["updated_at"]  # Date when the comment was updated
-        }
-        comments_info.append(comment_info)
+        if comment["user"]["login"] != pr_creator:
+            comment_info = {
+                "filename": None,  # No file is associated with a general comment
+                "code": None,  # No code is associated with a general comment
+                "comment": comment["body"],  # Text of the comment
+                "date": comment["updated_at"]  # Date when the comment was updated
+            }
+            comments_info.append(comment_info)
     return comments_info
 
 
@@ -384,3 +391,5 @@ def process_pull_request_diffs(index: int, filepath: str) -> List[Dict[str, str]
 
     # Construct the list of files with their contents using list comprehension
     return [{"filename": filename, "content": content} for filename, content in files_content.items()]
+
+# pp(get_pull_request_comments("https://github.com/CorporationX/god_bless/pull/11585"))
