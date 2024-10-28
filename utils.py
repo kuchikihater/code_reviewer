@@ -1,5 +1,7 @@
 from urllib.parse import urlparse
 
+import json
+
 import requests
 
 from logger_setup import logger
@@ -64,7 +66,7 @@ def make_github_api_request(api_url:str , headers: dict) -> dict:
 
     Raises:
         Exception: If an error occurs corresponding to the processed status code.
-"""
+    """
     try:
         response = requests.get(api_url, headers=headers)
         response.raise_for_status()
@@ -123,67 +125,59 @@ def make_github_api_request(api_url:str , headers: dict) -> dict:
 #
 #     return code
 
-def preprocessing_code_pr_new(code: list) -> list:
-    """
-    Processes a list of dictionaries representing files and their content in a pull request diff format.
-    It removes specific diff markers, assigns line numbers to each line, and excludes lines starting with '-'.
-
-    Args:
-        code (List[Dict[str, str]]): A list of dictionaries where each dictionary represents a file with its content.
-
-    Returns:
-        List[Dict[str, List[Dict[str, str]]]]: A list of dictionaries where each dictionary contains the file name
-        and the list of its lines, each with a line number and content.
-    """
-    pattern_diff = re.compile(r"@@ -(\d+,?\d*) \+(\d+,?\d*) @@")
-    pattern_minus = re.compile(r"^-")  # Matches lines starting with '-'
-    pattern_plus = re.compile(r"^\+")  # Matches lines starting with '-'
-    pattern_number = re.compile(r"(\d+),?(\d*)")  #Matches numbers
-
-    # Iterate through each file in the code dictionary
-    for file in code:
-        # Remove diff markers (lines starting with '@@' and ending with '@@')
-        lines = file["content"].split("\n")
-
-        # Prepare to hold the new content with line numbers
-        new_content = []
-        count = 1
-
-        for line in lines:
-            if pattern_diff.match(line):
-                diff_lines = pattern_diff.match(line)
-                file_start_new_version = int(pattern_number.match(diff_lines.group(2)).group(1))
-                count = file_start_new_version
-                continue
-            line_numb = {
-                "line_number": count,
-                "content": line
-            }
-            if not pattern_minus.match(line):
-                count += 1
-            new_content.append(line_numb)  #
-
-        file["content"] = new_content
-
-    return code
-
 
 def get_first_comment_date(comments: List[Dict]) -> datetime:
     """
-        Returns the earliest comment date from the list of comments.
+    Returns the earliest comment date from the list of comments.
 
-        Args:
-            comments (List[Dict]): A list of comments with date information.
+    Args:
+        comments (List[Dict]): A list of comments with date information.
 
-        Returns:
-            datetime: The earliest comment date.
-        """
+    Returns:
+        datetime: The earliest comment date.
+    """
     comments_dates = [datetime.strptime(comment["date"], '%Y-%m-%dT%H:%M:%SZ') for comment in comments]
     return min(comments_dates)
 
 
-# pp(make_github_api_request('https://api.github.com/repos/kuchikihater/gruppirovka/pulls/6', headers = {
-#         "Accept": "application/vnd.github+json",
-#         'Authorization': f'Bearer {os.getenv("GITHUB_API_KEY")}'
-#     }))
+def apply_diff(content, diff) -> str:
+    """
+    Apply a diff to the given content.
+
+    Args:
+    content (str): The original content before applying the diff.
+    diff (str): The diff patch containing the changes.
+
+    Returns:
+    str: The content after applying the diff.
+    """
+    content_lines = content.splitlines()
+    diff_lines = diff.splitlines()
+
+    line_index = 0
+
+    for line in diff_lines:
+        if line.startswith('@@'):
+            # Parse the line number range from the diff header (e.g., @@ -0,0 +1,29 @@)
+            match = re.match(r'@@ -\d+(,\d+)? \+(\d+)(,\d+)? @@', line)
+            if match:
+                line_index = int(match.group(2)) - 1  # Starting index for the change
+        elif line.startswith('+'):
+            # Add a new line from the diff
+            content_lines.insert(line_index, "+"+line[1:])
+            line_index += 1
+        elif line.startswith('-'):
+            # Remove a line (if it exists at the specified index)
+            if line_index < len(content_lines):
+                content_lines.pop(line_index)
+        else:
+            # Move past unchanged lines in the diff
+            line_index += 1
+
+    return '\n'.join(content_lines)
+
+
+
+
+
 

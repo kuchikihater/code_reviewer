@@ -1,6 +1,5 @@
 import os
-from typing import List, Dict, Optional, Any, Tuple
-from urllib.parse import urlparse
+from typing import List, Dict, Optional
 
 import requests
 from langchain_community.document_loaders import NotionDBLoader
@@ -10,9 +9,12 @@ from logger_setup import *
 from rich import print as pp
 from dotenv import load_dotenv
 
-from utils import parse_github_pull_request_url, make_github_api_request, preprocessing_code_pr_new
+from utils import parse_github_pull_request_url, make_github_api_request, apply_diff
 
 from datetime import datetime
+
+import json
+import re
 
 load_dotenv()
 
@@ -39,6 +41,14 @@ def get_commit_details(owner: str, repo: str, sha: str, headers: Dict[str, str])
             "commit_date": commit_details['commit']['author']['date'],
             "files": []
         }
+        # Filter out deleted files
+        filtered_files = [
+            file for file in commit_details.get("files", [])
+            if file.get("status") != "removed"
+        ]
+
+        # Update the commit info with filtered files
+        commit_details["files"] = filtered_files
 
         for file in commit_details.get('files', []):
             file_info = {
@@ -99,6 +109,11 @@ def get_pull_request_commits_content(url: str) -> Dict[str, Dict[str, str]]:
 
         commit_info = get_commit_details(owner, repo, sha, headers)
         if commit_info:
+            # Filter out deleted files
+            filtered_files = [
+                file for file in commit_info.get("files", [])
+                if file.get("status") != "removed"
+            ]
             commits_info.append(commit_info)
         else:
             logger.error(f"Failed to retrieve details for commit {sha}")
@@ -275,6 +290,51 @@ def get_notion_docs(
     return docs
 
 
+def preprocessing_code_pr(code: list) -> list:
+    """
+    Processes a list of dictionaries representing files and their content in a pull request diff format.
+    It removes specific diff markers, assigns line numbers to each line, and excludes lines starting with '-'.
+
+    Args:
+        code (List[Dict[str, str]]): A list of dictionaries where each dictionary represents a file with its content.
+
+    Returns:
+        List[Dict[str, List[Dict[str, str]]]]: A list of dictionaries where each dictionary contains the file name
+        and the list of its lines, each with a line number and content.
+    """
+    pattern_diff = re.compile(r"@@ -(\d+,?\d*) \+(\d+,?\d*) @@")
+    pattern_minus = re.compile(r"^-")  # Matches lines starting with '-'
+    pattern_plus = re.compile(r"^\+")  # Matches lines starting with '-'
+    pattern_number = re.compile(r"(\d+),?(\d*)")  #Matches numbers
+
+    # Iterate through each file in the code dictionary
+    for file in code:
+        # Remove diff markers (lines starting with '@@' and ending with '@@')
+        lines = file["content"].split("\n")
+
+        # Prepare to hold the new content with line numbers
+        new_content = []
+        count = 1
+
+        for line in lines:
+            if pattern_diff.match(line):
+                diff_lines = pattern_diff.match(line)
+                file_start_new_version = int(pattern_number.match(diff_lines.group(2)).group(1))
+                count = file_start_new_version
+                continue
+            line_numb = {
+                "line_number": count,
+                "content": line
+            }
+            if not pattern_minus.match(line):
+                count += 1
+            new_content.append(line_numb)  #
+
+        file["content"] = new_content
+
+    return code
+
+
 def get_commits_before_date_comment(commits: List[Dict], date: datetime) -> List[Dict]:
     """
         Returns commits that were made before a given firts comment.
@@ -291,7 +351,36 @@ def get_commits_before_date_comment(commits: List[Dict], date: datetime) -> List
     return filtered_commits
 
 
-# commits = get_pull_request_commits_content('https://github.com/kuchikihater/code_reviewer/pull/1/files')
-comments = get_pull_request_comments('https://github.com/kuchikihater/code_reviewer/pull/1')
-pp(comments)
+def process_pull_request_diffs(index: int, filepath: str) -> List[Dict[str, str]]:
+    """
+    Process the diffs from the pull request and reconstruct the file content.
 
+    Args:
+        index (int): Index of the pull request to process.
+        filepath (str): Path to the JSON file containing pull request data.
+
+    Returns:
+        List[Dict[str, str]]: A list of dictionaries with filename and content.
+    """
+
+    # Load the JSON file
+    with open(filepath, "r") as f:
+        result = json.load(f)
+
+    # Extract the specific pull request by index
+    pull_request = result[index]
+
+    files_content = {}
+
+    # Apply diffs to the corresponding files
+    for timestamp, contents in pull_request["content"].items():
+        for content in contents:
+            filename = content["filename"]
+            diff = content["changes"]
+            # Use setdefault to initialize the file content if not present
+            files_content.setdefault(filename, "")
+            # Apply the diff to the file content
+            files_content[filename] = apply_diff(files_content[filename], diff)
+
+    # Construct the list of files with their contents using list comprehension
+    return [{"filename": filename, "content": content} for filename, content in files_content.items()]

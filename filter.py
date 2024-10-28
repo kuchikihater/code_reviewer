@@ -9,6 +9,7 @@ from tools import *
 from dotenv import load_dotenv
 from os import getenv
 import time
+import json
 
 load_dotenv()
 
@@ -36,6 +37,24 @@ def get_pr(state: State):
     print(f"Pull Request{time.time() - start}")
     return {"message": [code]}
 
+
+def get_code_for_testing(state: dict):
+    # Load the JSON data from file
+    with open("studio/data.json", "r") as f:
+        result = json.load(f)
+
+    # Extract the pull request by matching the URL from the state
+    pull_request = next((pr for pr in result if pr["url"] == state["message"][0]), None)
+
+    if pull_request:
+        # Find the index of the pull request
+        index = result.index(pull_request)
+        # Process the pull request diffs and get the code
+        code = process_pull_request_diffs(index, "studio/data.json")
+        return {"message": [code]}
+    else:
+        logger.error("Pull Request not found in dataset.")
+        raise ValueError("Pull Request not found in dataset.")
 
 def preprocessing_code(state: State):
     start = time.time()
@@ -153,11 +172,12 @@ def filter_comments(state: State):
 
 builder = StateGraph(State)
 builder.add_node("GitHub PR", get_pr)
+builder.add_node("Test Pull Request", get_code_for_testing)
 builder.add_node("Assign Lines", preprocessing_code)
 builder.add_node("Generate Comments", model_invoke)
 builder.add_node("Filter Comments", filter_comments)
-builder.add_edge(START, "GitHub PR")
-builder.add_edge("GitHub PR", "Assign Lines")
+builder.add_edge(START, "Test Pull Request")
+builder.add_edge("Test Pull Request", "Assign Lines")
 builder.add_edge("Assign Lines", "Generate Comments")
 builder.add_edge("Generate Comments", "Filter Comments")
 builder.add_edge("Filter Comments", END)
