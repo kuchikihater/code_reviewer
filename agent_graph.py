@@ -11,7 +11,6 @@ from os import getenv
 
 from rich import print as pp
 
-
 load_dotenv()
 
 
@@ -37,17 +36,26 @@ llm = ChatOpenAI(
 
 parser = JsonOutputParser(pydantic_object=ListSuggestion)
 
-
 create_initial_comments_prompt = PromptTemplate.from_template(prompt_full_code_template)
 filter_comments_prompt = PromptTemplate.from_template(prompt_filter_comments)
-
 
 filter_comments_chain = filter_comments_prompt | llm | parser
 create_initial_comments_chain = create_initial_comments_prompt | llm | parser
 
 
-class State(TypedDict):
+class InputState(TypedDict):
+    # Those 2 must be provided by user when we invoke graph
+    pull_request_link: str  # link to pull request
+    notion_doc_id: str  # page_id for notion doc
 
+
+class OutputState(TypedDict):
+    initial_comments: list  # comments from the first try
+    dropped_comments: list  # deleted engineering or non informative comments
+    filtered_comments: list  # final set of comments that model generated
+
+
+class OverallState(TypedDict):
     # Those 2 must be provided by user when we invoke graph
     pull_request_link: str  # link to pull request
     notion_doc_id: str  # page_id for notion doc
@@ -60,23 +68,22 @@ class State(TypedDict):
     tech_task_description: List[Document]  # technical task information
 
 
-def get_tech_task_description(state: State) -> State:
+def get_tech_task_description(state: OverallState) -> OverallState:
     state['tech_task_description'] = get_notion_docs(page_id=state['notion_doc_id'])
     return state
 
 
-def get_raw_code(state: State) -> State:
+def get_raw_code(state: InputState) -> OverallState:
     state['raw_code'] = get_pull_request_content(state["pull_request_link"])
     return state
 
 
-def preprocessing_code(state: State):
+def preprocessing_code(state: OverallState):
     state['preprocessed_code'] = preprocessing_code_pr(state["raw_code"])
     return state
 
 
-def generate_comment_invoke(state: State):
-
+def generate_comment_invoke(state: OverallState):
     # Create Comments for PR
     first_round_comments_generated = create_initial_comments_chain.invoke({
         "code": state["preprocessed_code"],
@@ -89,8 +96,7 @@ def generate_comment_invoke(state: State):
     return state
 
 
-def filter_comment_invoke(state: State):
-
+def filter_comment_invoke(state: OverallState) -> OutputState:
     # Filter Comments
     filtered_comments_response = filter_comments_chain.invoke({
         "comments": state["initial_comments"],
@@ -99,18 +105,18 @@ def filter_comment_invoke(state: State):
 
     state['filtered_comments'] = filtered_comments_response
 
-    state['dropped_comments'] = [comment for comment in state['initial_comments'] if comment not in state['filtered_comments']]
+    state['dropped_comments'] = [comment for comment in state['initial_comments'] if
+                                 comment not in state['filtered_comments']]
 
     return state
 
 
-builder = StateGraph(State)
+builder = StateGraph(OverallState, input=InputState, output=OutputState)
 builder.add_node("GitHub PR", get_raw_code)
 builder.add_node("Get Tech Task Description", get_tech_task_description)
 builder.add_node("Assign Lines", preprocessing_code)
 builder.add_node("Generate Comments", generate_comment_invoke)
 builder.add_node("Filter Comments", filter_comment_invoke)
-
 
 builder.add_edge(START, "GitHub PR")
 builder.add_edge("GitHub PR", "Get Tech Task Description")
@@ -121,11 +127,5 @@ builder.add_edge("Filter Comments", END)
 
 graph = builder.compile()
 
-
 pp(graph.invoke({"pull_request_link": "https://github.com/CorporationX/god_bless/pull/14060",
                  "notion_doc_id": "120ffd2d-b62a-8058-93e2-e14363c7b31e"}))
-
-
-
-
-
