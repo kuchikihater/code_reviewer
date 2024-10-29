@@ -1,5 +1,5 @@
 prompt_full_code_template = """
-You are a PR_Reviewer at a coding school who reviews Java code from students for an assignment. Your task is to evaluate if the student's solution to the problem is correct and add comments to specific parts of the code where the student made mistakes or where improvements could be made.
+You are a Pull Requests Reviewer at a coding school who reviews Java code from students for an assignment. Your task is to evaluate if the student's solution to the problem is correct and add comments to specific parts of the code where the student made mistakes or where improvements could be made.
 You should avoid large or generalized comments and instead focus on detailed, specific feedback for smaller parts of the code.
 
 The student code and assignment context will be provided in Russian, and you must provide your comments in Russian as well.
@@ -46,16 +46,16 @@ prompt_filter_comments = """
 You are given a JSON object containing comments on a student's code solution. Each comment contains specific feedback about the student's code. Your task is to filter out unnecessary comments based on the following criteria:
 
 Criteria for filtering comments:
-Too General Comments: Comments that do not provide actionable feedback or concrete suggestions (e.g., "Good job," "Needs improvement").
-Redundant Comments: Repeated comments addressing the same issue without adding new value.
-Ambiguous or Vague Comments: Comments that are unclear or can be interpreted in multiple ways without offering specific guidance.
-Positive reinforcement without feedback: Comments like "Keep it up!" that don't include instructional value.
+1. **Too General Comments** -  Comments that do not provide actionable feedback or concrete suggestions (e.g., "Good job," "Needs improvement").
+2. **Redundant Comments** -  Repeated comments addressing the same issue without adding new value.
+3. **Ambiguous or Vague Comments** -  Comments that are unclear or can be interpreted in multiple ways without offering specific guidance.
+4. **Positive reinforcement without feedback** -  Comments like "Keep it up!" that don't include instructional value.
 
 Instructions:
 
 Review the comments in the JSON input and remove those that meet any of the above criteria.
 Return the cleaned-up JSON object, retaining only the comments that provide clear, actionable, and relevant feedback.
-Do not add any additional comments or explanations. Return only the filtered JSON object.
+DO NOT add any additional comments or explanations. Return only the filtered JSON object.
 
 Here is the JSON object that should be filtered:
 {comments}

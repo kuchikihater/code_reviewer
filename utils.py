@@ -1,25 +1,14 @@
 from urllib.parse import urlparse
-
-import json
-
 import requests
-
 from logger_setup import logger
-
 import re
-
-from rich import print as pp
-
-import os
-
 from dotenv import load_dotenv
-
 from typing import List, Dict
-
 from datetime import datetime
 
 
 load_dotenv()
+
 
 def parse_github_pull_request_url(url: str) -> tuple[str, str, str]:
     """

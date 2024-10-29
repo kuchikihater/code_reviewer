@@ -312,7 +312,7 @@ def preprocessing_code_pr(code: list) -> list:
     pattern_diff = re.compile(r"@@ -(\d+,?\d*) \+(\d+,?\d*) @@")
     pattern_minus = re.compile(r"^-")  # Matches lines starting with '-'
     pattern_plus = re.compile(r"^\+")  # Matches lines starting with '-'
-    pattern_number = re.compile(r"(\d+),?(\d*)")  #Matches numbers
+    pattern_number = re.compile(r"(\d+),?(\d*)")  # Matches numbers
 
     # Iterate through each file in the code dictionary
     for file in code:

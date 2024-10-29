@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from os import getenv
 import time
 import json
+from rich import print as pp
+
 
 load_dotenv()
 
@@ -55,6 +57,7 @@ def get_code_for_testing(state: dict):
     else:
         logger.error("Pull Request not found in dataset.")
         raise ValueError("Pull Request not found in dataset.")
+
 
 def preprocessing_code(state: State):
     start = time.time()
@@ -176,7 +179,10 @@ builder.add_node("Test Pull Request", get_code_for_testing)
 builder.add_node("Assign Lines", preprocessing_code)
 builder.add_node("Generate Comments", model_invoke)
 builder.add_node("Filter Comments", filter_comments)
-builder.add_edge(START, "Test Pull Request")
+
+builder.add_edge(START, "GitHub PR")
+
+builder.add_edge("GitHub PR", "Test Pull Request")
 builder.add_edge("Test Pull Request", "Assign Lines")
 builder.add_edge("Assign Lines", "Generate Comments")
 builder.add_edge("Generate Comments", "Filter Comments")
@@ -184,6 +190,7 @@ builder.add_edge("Filter Comments", END)
 
 graph = builder.compile()
 
-print(graph.invoke({"message": ["https://github.com/kuchikihater/gruppirovka/pull/6"]}))
+
+# pp(graph.invoke({"message": ["https://github.com/CorporationX/god_bless/pull/14060"]}))
 
 
