@@ -174,3 +174,56 @@
 2024-10-21 18:10:36,039 - INFO - get_pull_request_content() called
 2024-10-21 18:10:36,039 - INFO - Owner: kuchikihater, Repo: gruppirovka, Pull Number: 6
 2024-10-21 18:10:36,290 - ERROR - Pull request not found.
+2024-10-30 18:17:13,922 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:17:14,032 - INFO - get_pull_request_content() called
+2024-10-30 18:17:14,032 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:17:14,278 - INFO - get_notion_docs() called
+2024-10-30 18:17:17,190 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-30 18:17:17,191 - INFO - Loaded 1 document(s).
+2024-10-30 18:20:16,998 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:20:17,094 - INFO - get_pull_request_content() called
+2024-10-30 18:20:17,094 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:20:17,320 - INFO - get_notion_docs() called
+2024-10-30 18:20:20,424 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-30 18:20:20,425 - INFO - Loaded 1 document(s).
+2024-10-30 18:27:46,801 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:27:46,912 - INFO - get_pull_request_content() called
+2024-10-30 18:27:46,912 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:27:47,160 - INFO - get_notion_docs() called
+2024-10-30 18:27:49,524 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-30 18:27:49,525 - INFO - Loaded 1 document(s).
+2024-10-30 18:28:12,294 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:28:12,382 - INFO - get_pull_request_content() called
+2024-10-30 18:28:12,382 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:28:12,723 - INFO - get_notion_docs() called
+2024-10-30 18:28:15,720 - ERROR - No documents found with page_id: 120ffd2db62a805893e2e14363c7b31e
+2024-10-30 18:31:07,530 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:31:07,535 - INFO - get_notion_docs() called
+2024-10-30 18:31:12,907 - INFO - Loaded 3 document(s).
+2024-10-30 18:35:45,229 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:35:45,236 - INFO - get_notion_docs() called
+2024-10-30 18:37:37,573 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:37:37,578 - INFO - get_notion_docs() called
+2024-10-30 18:38:49,719 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:38:49,726 - INFO - get_notion_docs() called
+2024-10-30 18:41:13,490 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:41:13,494 - INFO - get_notion_docs() called
+2024-10-30 18:41:16,140 - INFO - Loaded 3 document(s).
+2024-10-30 18:41:16,263 - INFO - get_pull_request_content() called
+2024-10-30 18:41:16,263 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:41:16,538 - INFO - get_notion_docs() called
+2024-10-30 18:41:18,751 - INFO - Loaded 3 document(s).
+2024-10-30 18:41:44,016 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:41:44,021 - INFO - get_notion_docs() called
+2024-10-30 18:41:46,643 - INFO - Loaded 3 document(s).
+2024-10-30 18:41:46,755 - INFO - get_pull_request_content() called
+2024-10-30 18:41:46,755 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:41:47,113 - INFO - get_notion_docs() called
+2024-10-30 18:41:50,143 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-30 18:41:50,144 - INFO - Loaded 1 document(s).
+2024-10-30 18:42:19,009 - INFO - Logging setup complete. Logs will be written to 'app.log' and console.
+2024-10-30 18:42:19,099 - INFO - get_pull_request_content() called
+2024-10-30 18:42:19,099 - INFO - Owner: CorporationX, Repo: god_bless, Pull Number: 14060
+2024-10-30 18:42:19,351 - INFO - get_notion_docs() called
+2024-10-30 18:42:23,304 - INFO - Document with page_id 120ffd2d-b62a-8058-93e2-e14363c7b31e found.
+2024-10-30 18:42:23,304 - INFO - Loaded 1 document(s).
