@@ -241,7 +241,7 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
 
 
 def get_notion_docs(
-        database_id: str = '120ffd2db62a800b843bd72e82ec59b1',
+        database_id: str,
         page_id: Optional[str] = None
 ) -> List[Document]:
     """
