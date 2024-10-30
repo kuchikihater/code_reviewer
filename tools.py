@@ -9,7 +9,7 @@ from logger_setup import *
 from rich import print as pp
 from dotenv import load_dotenv
 
-from utils import parse_github_pull_request_url, make_github_api_request, apply_diff
+from utils import parse_github_pull_request_url, make_github_api_request, apply_diff, extract_line_range
 
 from datetime import datetime
 
@@ -218,22 +218,31 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
     # Process code comments and collect the needed information
     for comment in code_comments_data:
         if comment["user"]["login"] != pr_creator:
+            start_line = comment.get("start_line", comment.get("line"))
+            end_line = comment.get("line")
+            if end_line is None and start_line is None:
+                end_line = comment.get("original_line")
+                start_line = comment.get("original_start_line", comment.get("original_line"))
+            if start_line is None and end_line is not None:
+                start_line = end_line-3
+            line_range = [start_line, end_line]
             comment_info = {
-                "filename": comment["path"],  # File related to the comment
+                "file": comment["path"],  # File related to the comment
                 "code": comment.get("diff_hunk", ""),  # Code related to the comment (diff hunk)
-                "comment": comment["body"],  # Text of the comment
+                "suggestion": comment["body"],  # Text of the comment
+                "lines": line_range,
                 "date": comment["updated_at"]  # Date when the comment was updated
             }
             comments_info.append(comment_info)
 
     # Process general comments and collect the needed information
-    pp(issue_comments_data)
     for comment in issue_comments_data:
         if comment["user"]["login"] != pr_creator:
             comment_info = {
                 "filename": None,  # No file is associated with a general comment
                 "code": None,  # No code is associated with a general comment
                 "comment": comment["body"],  # Text of the comment
+                "line_range": None,
                 "date": comment["updated_at"]  # Date when the comment was updated
             }
             comments_info.append(comment_info)
@@ -241,7 +250,7 @@ def get_pull_request_comments(url: str) -> List[Dict[str, str]]:
 
 
 def get_notion_docs(
-        database_id: str = '120ffd2db62a800b843bd72e82ec59b1',
+        database_id: str,
         page_id: Optional[str] = None
 ) -> List[Document]:
     """
@@ -392,4 +401,3 @@ def process_pull_request_diffs(index: int, filepath: str) -> List[Dict[str, str]
     # Construct the list of files with their contents using list comprehension
     return [{"filename": filename, "content": content} for filename, content in files_content.items()]
 
-# pp(get_pull_request_comments("https://github.com/CorporationX/god_bless/pull/11585"))
