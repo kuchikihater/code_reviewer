@@ -5,7 +5,7 @@ import re
 from dotenv import load_dotenv
 from typing import List, Dict
 from datetime import datetime
-
+from uuid import UUID
 
 load_dotenv()
 
@@ -166,6 +166,20 @@ def apply_diff(content, diff) -> str:
     return '\n'.join(content_lines)
 
 
+def normalize_id(notion_id: str) -> str:
+    # Remove hyphens if they exist
+    cleaned_id = notion_id.replace("-", "")
+
+    # Check if the cleaned ID has 32 characters to be a valid hex string
+    if len(cleaned_id) == 32:
+        try:
+            return str(UUID(cleaned_id))  # Converts to hyphenated UUID format
+        except ValueError:
+            logger.error("Invalid UUID format for Notion ID: %s", notion_id)
+            return notion_id  # Return as-is if conversion fails
+    else:
+        logger.error("Notion ID length mismatch: %s", notion_id)
+        return notion_id  # Return as-is if length isn't valid for UUID
 
 
 

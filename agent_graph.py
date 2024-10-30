@@ -71,7 +71,7 @@ class OverallState(TypedDict):
 
 
 def get_tech_task_description(state: OverallState) -> OverallState:
-    state['tech_task_description'] = get_notion_docs(database_id=state["notion_db_id"],page_id=state['notion_doc_id'])
+    state['tech_task_description'] = get_notion_docs(database_id=state["notion_db_id"], page_id=state['notion_doc_id'])
     return state
 
 
@@ -130,4 +130,4 @@ builder.add_edge("Filter Comments", END)
 graph = builder.compile()
 
 pp(graph.invoke({"pull_request_link": "https://github.com/CorporationX/god_bless/pull/14060",
-                 "notion_doc_id": "120ffd2d-b62a-8058-93e2-e14363c7b31e", "notion_db_id": "120ffd2db62a800b843bd72e82ec59b1"}))
+                 "notion_doc_id": "120ffd2db62a805893e2e14363c7b31e", "notion_db_id": "120ffd2db62a800b843bd72e82ec59b1"}))

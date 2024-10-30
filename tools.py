@@ -9,7 +9,7 @@ from logger_setup import *
 from rich import print as pp
 from dotenv import load_dotenv
 
-from utils import parse_github_pull_request_url, make_github_api_request, apply_diff
+from utils import parse_github_pull_request_url, make_github_api_request, apply_diff, normalize_id
 
 from datetime import datetime
 
@@ -279,6 +279,8 @@ def get_notion_docs(
         logger.error("Error while initiating NotionDBLoader: %s", e)
         raise
 
+    if page_id is not None:
+        page_id = normalize_id(page_id)
     # Filter documents by page_id if provided
     if page_id is not None:
         docs = [doc for doc in docs if doc.metadata.get('id') == page_id]
@@ -392,4 +394,3 @@ def process_pull_request_diffs(index: int, filepath: str) -> List[Dict[str, str]
     # Construct the list of files with their contents using list comprehension
     return [{"filename": filename, "content": content} for filename, content in files_content.items()]
 
-# pp(get_pull_request_comments("https://github.com/CorporationX/god_bless/pull/11585"))
