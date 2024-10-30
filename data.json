@@ -18,15 +18,23 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/groupUsersByAge/User.java",
+                "file": "src/main/java/groupUsersByAge/User.java",
                 "code": "@@ -0,0 +1,39 @@\n+package groupUsersByAge;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+@ToString\n+public class User {\n+    private String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsersByAge(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+        for (User user : users) {\n+            if (user.getAge() < 1) {\n+                throw new IllegalArgumentException(\"Incorrect age value\");\n+            }\n+            if (groupedUsers.containsKey(user.getAge())) {\n+                groupedUsers.get(user.getAge()).add(user);\n+            } else {\n+                List<User> userList = new ArrayList<>();\n+                userList.add(user);\n+                groupedUsers.put(user.getAge(), userList);\n+            }",
-                "comment": "Да, это верно, но можно сделать код лаконичней. Попробуй использовать метод класса Map putIfAbsent",
+                "suggestion": "Да, это верно, но можно сделать код лаконичней. Попробуй использовать метод класса Map putIfAbsent",
+                "lines": [
+                    29,
+                    35
+                ],
                 "date": "2024-10-03T20:02:27Z"
             },
             {
-                "filename": "src/main/java/groupUsersByAge/User.java",
+                "file": "src/main/java/groupUsersByAge/User.java",
                 "code": "@@ -0,0 +1,39 @@\n+package groupUsersByAge;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+@ToString\n+public class User {\n+    private String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsersByAge(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+        for (User user : users) {\n+            if (user.getAge() < 1) {\n+                throw new IllegalArgumentException(\"Incorrect age value\");\n+            }",
-                "comment": "валидацию можно вынести в отдельный метод)",
+                "suggestion": "валидацию можно вынести в отдельный метод)",
+                "lines": [
+                    26,
+                    28
+                ],
                 "date": "2024-10-03T20:02:27Z"
             }
         ]
@@ -46,27 +54,43 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang/group_user_by_age/User.java",
+                "file": "src/main/java/school/faang/group_user_by_age/User.java",
                 "code": "@@ -0,0 +1,21 @@\n+package school.faang.group_user_by_age;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.List;\n+import java.util.Map;\n+\n+@Data\n+@AllArgsConstructor\n+public class User {\n+    private final String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    static Map<Integer, List<User>> groupUser(List<User> users, int age) {\n+        return Map.of(age, users.stream()\n+                .filter(user -> user.getAge() == age).toList());\n+    }",
-                "comment": "Метод Map.of создаст не изменяемую коллекцию. В дальнейшем нельзя будет добавить новые записи",
+                "suggestion": "Метод Map.of создаст не изменяемую коллекцию. В дальнейшем нельзя будет добавить новые записи",
+                "lines": [
+                    17,
+                    20
+                ],
                 "date": "2024-10-03T12:17:20Z"
             },
             {
-                "filename": "src/main/java/school/faang/group_user_by_age/User.java",
+                "file": "src/main/java/school/faang/group_user_by_age/User.java",
                 "code": "@@ -0,0 +1,21 @@\n+package school.faang.group_user_by_age;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.List;\n+import java.util.Map;\n+\n+@Data\n+@AllArgsConstructor\n+public class User {\n+    private final String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    static Map<Integer, List<User>> groupUser(List<User> users, int age) {\n+        return Map.of(age, users.stream()\n+                .filter(user -> user.getAge() == age).toList());\n+    }",
-                "comment": "И в вашем случае в Map будет только одна запись, в то время как мы хотим сгруппировать всех пользователей по возрастам",
+                "suggestion": "И в вашем случае в Map будет только одна запись, в то время как мы хотим сгруппировать всех пользователей по возрастам",
+                "lines": [
+                    17,
+                    20
+                ],
                 "date": "2024-10-03T12:17:20Z"
             },
             {
-                "filename": "src/main/java/school/faang/group_user_by_age/User.java",
+                "file": "src/main/java/school/faang/group_user_by_age/User.java",
                 "code": "@@ -0,0 +1,21 @@\n+package school.faang.group_user_by_age;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.List;\n+import java.util.Map;\n+\n+@Data\n+@AllArgsConstructor\n+public class User {\n+    private final String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    static Map<Integer, List<User>> groupUser(List<User> users, int age) {\n+        return Map.of(age, users.stream()\n+                .filter(user -> user.getAge() == age).toList());\n+    }",
-                "comment": "В данном методе нужен только один аргумент List\\<User>, а второй аргумент передавать не надо",
+                "suggestion": "В данном методе нужен только один аргумент List\\<User>, а второй аргумент передавать не надо",
+                "lines": [
+                    17,
+                    20
+                ],
                 "date": "2024-10-03T12:17:20Z"
             },
             {
-                "filename": "src/main/java/school/faang/group_user_by_age/User.java",
+                "file": "src/main/java/school/faang/group_user_by_age/User.java",
                 "code": "@@ -0,0 +1,21 @@\n+package school.faang.group_user_by_age;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.List;\n+import java.util.Map;\n+\n+@Data\n+@AllArgsConstructor\n+public class User {\n+    private final String name;\n+    private int age;\n+    private String company;\n+    private String address;\n+\n+    static Map<Integer, List<User>> groupUser(List<User> users, int age) {\n+        return Map.of(age, users.stream()\n+                .filter(user -> user.getAge() == age).toList());\n+    }",
-                "comment": "По итогу в Map должны оказаться все пользователи, которые были переданы в первом аргументе",
+                "suggestion": "По итогу в Map должны оказаться все пользователи, которые были переданы в первом аргументе",
+                "lines": [
+                    17,
+                    20
+                ],
                 "date": "2024-10-03T12:17:20Z"
             }
         ]
@@ -86,33 +110,53 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang/Main.java",
+                "file": "src/main/java/school/faang/Main.java",
                 "code": "@@ -1,4 +1,21 @@\n package school.faang;\n \n+import java.util.ArrayList;\n+import java.util.List;\n+import java.util.Map;\n+\n public class Main {\n+    public static void main(String[] args) {\n+        User Alexander = new User(\"Alexander\", 20, \"SNG\");\n+        User Timur = new User(\"Timur\", 25, \"Administration\");\n+        User Denis = new User(\"Denis\", 20, \"RosNeft\");\n+        User Kirill = new User(\"Kirill\", 24, \"SNG\");\n+        User Artur = new User(\"Artur\", 25, \"Administration\");\n+        User Artem = new User(\"Artem\", 24, \"SNG\");\n+        List<User> userList = List.of(Alexander,Timur, Denis, Kirill, Artur, Artem);",
-                "comment": "Можно делать List.of и внутри метода через запятую создавать объекты коллекции. Таким образом у тебя не будет лишних переменных и не надо думать как назвать эти переменные",
+                "suggestion": "Можно делать List.of и внутри метода через запятую создавать объекты коллекции. Таким образом у тебя не будет лишних переменных и не надо думать как назвать эти переменные",
+                "lines": [
+                    14,
+                    15
+                ],
                 "date": "2024-10-03T09:43:31Z"
             },
             {
-                "filename": "src/main/java/school/faang/User.java",
+                "file": "src/main/java/school/faang/User.java",
                 "code": "@@ -0,0 +1,31 @@\n+package school.faang;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.*;\n+\n+@AllArgsConstructor\n+@Data\n+public class User {\n+    private String name;\n+    private int age;\n+    private String job;\n+\n+    public static Map<Integer, List<User>> groupUsers (List<User> UsersList){\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+\n+        for (int i = 0; i < UsersList.size(); i++) {\n+            List<User> TempList = new ArrayList<>();",
-                "comment": "имена переменных обязательно с маленькой буквы",
+                "suggestion": "имена переменных обязательно с маленькой буквы",
+                "lines": [
+                    16,
+                    19
+                ],
                 "date": "2024-10-03T09:43:31Z"
             },
             {
-                "filename": "src/main/java/school/faang/User.java",
+                "file": "src/main/java/school/faang/User.java",
                 "code": "@@ -0,0 +1,31 @@\n+package school.faang;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.*;\n+\n+@AllArgsConstructor\n+@Data\n+public class User {\n+    private String name;\n+    private int age;\n+    private String job;\n+\n+    public static Map<Integer, List<User>> groupUsers (List<User> UsersList){",
-                "comment": "имена переменных только с маленькой буквы",
+                "suggestion": "имена переменных только с маленькой буквы",
+                "lines": [
+                    12,
+                    15
+                ],
                 "date": "2024-10-03T09:43:31Z"
             },
             {
-                "filename": "src/main/java/school/faang/User.java",
+                "file": "src/main/java/school/faang/User.java",
                 "code": "@@ -0,0 +1,31 @@\n+package school.faang;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.*;\n+\n+@AllArgsConstructor\n+@Data\n+public class User {\n+    private String name;\n+    private int age;\n+    private String job;\n+\n+    public static Map<Integer, List<User>> groupUsers (List<User> UsersList){\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+\n+        for (int i = 0; i < UsersList.size(); i++) {\n+            List<User> TempList = new ArrayList<>();\n+\n+            for (int j = 0; j < UsersList.size(); j++) {\n+                if (Objects.equals(UsersList.get(i).getAge(), UsersList.get(j).getAge())){",
-                "comment": "В данной задаче второй цикл не нужен. У тебя есть Map и каждый элемент надо положить в него, просто сразу находить нужное место. Сравнивать элементы попарно между собой нет необходимости",
+                "suggestion": "В данной задаче второй цикл не нужен. У тебя есть Map и каждый элемент надо положить в него, просто сразу находить нужное место. Сравнивать элементы попарно между собой нет необходимости",
+                "lines": [
+                    21,
+                    22
+                ],
                 "date": "2024-10-03T09:43:31Z"
             },
             {
-                "filename": "src/main/java/school/faang/User.java",
+                "file": "src/main/java/school/faang/User.java",
                 "code": "@@ -0,0 +1,31 @@\n+package school.faang;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.*;\n+\n+@AllArgsConstructor\n+@Data\n+public class User {\n+    private String name;\n+    private int age;\n+    private String job;\n+\n+    public static Map<Integer, List<User>> groupUsers (List<User> UsersList){\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+\n+        for (int i = 0; i < UsersList.size(); i++) {\n+            List<User> TempList = new ArrayList<>();\n+\n+            for (int j = 0; j < UsersList.size(); j++) {\n+                if (Objects.equals(UsersList.get(i).getAge(), UsersList.get(j).getAge())){",
-                "comment": "Попробуй использовать метод класса Map putIfAbsent или computeIfAbsent",
+                "suggestion": "Попробуй использовать метод класса Map putIfAbsent или computeIfAbsent",
+                "lines": [
+                    21,
+                    22
+                ],
                 "date": "2024-10-03T09:43:31Z"
             }
         ]
@@ -132,9 +176,13 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang/User.java",
+                "file": "src/main/java/school/faang/User.java",
                 "code": "@@ -0,0 +1,31 @@\n+package school.faang;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Data;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Data\n+@AllArgsConstructor\n+public class User {\n+\n+    private String name;\n+\n+    private int age;\n+\n+    private String job;\n+\n+    private String address;",
-                "comment": "Не нужно пропускать пустые строчки между полями класса. Это только усложняет чтение кода",
+                "suggestion": "Не нужно пропускать пустые строчки между полями класса. Это только усложняет чтение кода",
+                "lines": [
+                    15,
+                    21
+                ],
                 "date": "2024-10-02T13:29:17Z"
             }
         ]
@@ -158,27 +206,40 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/faang/school/godbless/BJS2_18565/User.java",
+                "file": "src/main/java/faang/school/godbless/BJS2_18565/User.java",
                 "code": "@@ -0,0 +1,26 @@\n+package faang.school.godbless.BJS2_18565;\n+\n+import lombok.AllArgsConstructor;\n+\n+import java.util.*;\n+\n+@AllArgsConstructor\n+public class User {\n+    private final String name;\n+    private final int age;\n+    private final String placeOfWork;\n+    private final String address;\n+\n+    public static Map<Integer, List<User>> groupUsers (List<User> users) {\n+        Map<Integer, List<User>> userMap = new HashMap<>();\n+        for (User user : users) {\n+            int userAge = user.age;",
-                "comment": "Не обращайся к переменным напрямую. В рамках данной задачи я это пропущу, но в дальнейшем - всегда обращайся только через геттеры. Поля никогда не должны быть публичными, если того не требуют исключительные обстоятельства, и обращаться к ним только через геттеры.",
+                "suggestion": "Не обращайся к переменным напрямую. В рамках данной задачи я это пропущу, но в дальнейшем - всегда обращайся только через геттеры. Поля никогда не должны быть публичными, если того не требуют исключительные обстоятельства, и обращаться к ним только через геттеры.",
+                "lines": [
+                    14,
+                    17
+                ],
                 "date": "2024-08-13T23:55:05Z"
             },
             {
-                "filename": "src/main/java/faang/school/godbless/BJS2_18565/User.java",
+                "file": "src/main/java/faang/school/godbless/BJS2_18565/User.java",
                 "code": "@@ -0,0 +1,26 @@\n+package faang.school.godbless.BJS2_18565;\n+\n+import lombok.AllArgsConstructor;\n+\n+import java.util.*;\n+\n+@AllArgsConstructor\n+public class User {\n+    private final String name;\n+    private final int age;\n+    private final String placeOfWork;\n+    private final String address;\n+\n+    public static Map<Integer, List<User>> groupUsers (List<User> users) {\n+        Map<Integer, List<User>> userMap = new HashMap<>();\n+        for (User user : users) {\n+            int userAge = user.age;\n+            if (userMap.containsKey(userAge)) {\n+                userMap.get(userAge).add(user);\n+            } else {\n+                userMap.put(userAge, new ArrayList<>(List.of(user)));\n+            }",
-                "comment": "Прочитай про computeIfAbsent",
+                "suggestion": "Прочитай про computeIfAbsent",
+                "lines": [
+                    18,
+                    22
+                ],
                 "date": "2024-08-13T23:55:05Z"
             },
             {
-                "filename": "src/main/java/faang/school/godbless/BJS2_18565/User.java",
+                "file": "src/main/java/faang/school/godbless/BJS2_18565/User.java",
                 "code": "@@ -0,0 +1,26 @@\n+package faang.school.godbless.BJS2_18565;\n+\n+import lombok.AllArgsConstructor;\n+\n+import java.util.*;",
-                "comment": "Никогда не импортируй всю либу, потому что у тебя подтягивается много компонентов, которые ты не используешь. Измени в настройках IDE, чтобы оно так не делало, там надо выставить, чтобы оно не импортило всю либу, пока из неё не сделают 99 импортов",
+                "suggestion": "Никогда не импортируй всю либу, потому что у тебя подтягивается много компонентов, которые ты не используешь. Измени в настройках IDE, чтобы оно так не делало, там надо выставить, чтобы оно не импортило всю либу, пока из неё не сделают 99 импортов",
+                "lines": [
+                    2,
+                    5
+                ],
                 "date": "2024-08-13T23:55:05Z"
             },
             {
                 "filename": null,
                 "code": null,
                 "comment": "BJS2-18565 - Группировка пользователей по возрасту - вот так должен называться пулл-реквест.",
+                "line_range": null,
                 "date": "2024-08-13T23:53:06Z"
             }
         ]
@@ -198,33 +259,50 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/faang/school/godbless/BJS218596/User.java",
+                "file": "src/main/java/faang/school/godbless/BJS218596/User.java",
                 "code": "@@ -0,0 +1,36 @@\n+package faang.school.godbless.BJS218596;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+\n+public class User {\n+    private String name;\n+    private Integer age;\n+    private String placeWork;\n+    private String address;",
-                "comment": "final добавь и посмотри особенности модификатора этого",
+                "suggestion": "final добавь и посмотри особенности модификатора этого",
+                "lines": [
+                    7,
+                    10
+                ],
                 "date": "2024-08-08T22:40:48Z"
             },
             {
-                "filename": "src/main/java/faang/school/godbless/BJS218596/User.java",
+                "file": "src/main/java/faang/school/godbless/BJS218596/User.java",
                 "code": "@@ -0,0 +1,36 @@\n+package faang.school.godbless.BJS218596;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+\n+public class User {\n+    private String name;\n+    private Integer age;\n+    private String placeWork;\n+    private String address;\n+\n+    public User(String name, Integer age, String placeWork, String address) {\n+        this.name = name;\n+        this.age = age;\n+        this.placeWork = placeWork;\n+        this.address = address;\n+    }\n+\n+    public Integer getAge() {\n+        return age;\n+    }\n+\n+    public static HashMap<Integer, ArrayList<User>> groupUsers(ArrayList<User> users) {\n+        HashMap<Integer, ArrayList<User>> groupUsers = new HashMap<>();\n+        for (User user : users) {\n+            int age = user.getAge();\n+            if (groupUsers.containsKey(age)) {\n+                groupUsers.get(age).add(user);\n+            } else {\n+                groupUsers.put(age, new ArrayList<>());\n+            }\n+        }\n+        return groupUsers;",
-                "comment": "неверная реализация\r\nпосмотри метод computeifabsent, тебе здесь подойдет хорошо, посмотри, что это за метод и попробуй применить",
+                "suggestion": "неверная реализация\r\nпосмотри метод computeifabsent, тебе здесь подойдет хорошо, посмотри, что это за метод и попробуй применить",
+                "lines": [
+                    23,
+                    33
+                ],
                 "date": "2024-08-08T22:40:48Z"
             },
             {
-                "filename": "src/main/java/faang/school/godbless/BJS218596/Solution.java",
+                "file": "src/main/java/faang/school/godbless/BJS218596/Solution.java",
                 "code": "@@ -0,0 +1,20 @@\n+package faang.school.godbless.BJS218596;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+\n+public class Solution {\n+    public static void main(String[] args) {\n+        ArrayList<User> users = new ArrayList<>();",
-                "comment": "в юзере и тут у тебя используются реализации (мутабельные) интерфейсов - почему так?\r\n",
+                "suggestion": "в юзере и тут у тебя используются реализации (мутабельные) интерфейсов - почему так?\r\n",
+                "lines": [
+                    5,
+                    8
+                ],
                 "date": "2024-08-08T22:40:48Z"
             },
             {
-                "filename": "src/main/java/faang/school/godbless/BJS218596/Solution.java",
+                "file": "src/main/java/faang/school/godbless/BJS218596/Solution.java",
                 "code": "@@ -0,0 +1,20 @@\n+package faang.school.godbless.BJS218596;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+\n+public class Solution {\n+    public static void main(String[] args) {\n+        ArrayList<User> users = new ArrayList<>();\n+        users.add(new User(\"Dmitriy\", 26, \"Aston\", \"street 1\"));\n+        users.add(new User(\"Ivan\", 26, \"Sber\", \"street 2\"));\n+        users.add(new User(\"Oleg\", 18, \"Tinkoff\", \"street 3\"));\n+        users.add(new User(\"Pavel\", 19, \"Yandex\", \"street 4\"));\n+\n+        HashMap<Integer, ArrayList<User>> groupUsersAge = User.groupUsers(users);\n+        for (Integer key : groupUsersAge.keySet()) {\n+            ArrayList<User> value = groupUsersAge.get(key);\n+            System.out.println(key + \"-->\" + value);",
-                "comment": "чтобы увидеть распечатанные данные, тебе необходимо переопределить toString\r\n",
+                "suggestion": "чтобы увидеть распечатанные данные, тебе необходимо переопределить toString\r\n",
+                "lines": [
+                    16,
+                    19
+                ],
                 "date": "2024-08-08T22:40:48Z"
             },
             {
                 "filename": null,
                 "code": null,
                 "comment": "> Правильно ли разделил файл с классом и решением? или надо вместе писать Lombok пока не использовал, решил сам пописать, попрактиковаться, но знаю что надо его использовать И думаю не правильно вывожу данные в консоль, как можно вывести всю информацию в консоль в данном случае? т.е группу и все данные по пользователю в данной группе\r\n\r\nпочти все верно сделал, комменты тебе оставила, в чем были ошибки\r\nпро ломбок поняла тебя, молодец, позже просто начнешь применять\r\nтак-то тебе и идея генерить может боллер код, а ломбок как раз придуман для того, чтобы спрятать это всё и прикладывать минимум усилий для генерации боллер кода\r\nруками пощупай на нескольких задачках буквально, как и хотел, написание такого кода и дальше применяй ломбок затем тогда\r\n\r\n\r\n",
+                "line_range": null,
                 "date": "2024-08-08T22:46:50Z"
             }
         ]
@@ -251,6 +329,7 @@
                 "filename": null,
                 "code": null,
                 "comment": "⚠️ **ОШЫБКА**: Ты создал PR в master ветку. PR-ы можно создавать только в СВОЮ ветку вида {имя_пользователя_discord}. Пожалуйста, нажми кнопку Edit вверху и измени ветку, в которую направляешь PR. После этого красная ошибка ниже должна пропасть, но этот комментарий останется - так и должно быть.",
+                "line_range": null,
                 "date": "2024-08-07T16:21:31Z"
             }
         ]
@@ -270,16 +349,14 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/faang/school/godbless/grouping_users_by_age/User.java",
+                "file": "src/main/java/faang/school/godbless/grouping_users_by_age/User.java",
                 "code": "@@ -0,0 +1,39 @@\n+package faang.school.godbless.grouping_users_by_age;\n+\n+\n+import lombok.AllArgsConstructor;\n+import lombok.EqualsAndHashCode;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+public class User {\n+    private String name;\n+    private int age;\n+    private String placeOfWork;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsers(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+\n+        for (User user : users) {\n+            if (!groupedUsers.containsKey(user.getAge())) {",
-                "comment": "! - этот знак плохо читается. Поэтому удобнее изменить if, так, чтобы в нем не было НЕ",
+                "suggestion": "! - этот знак плохо читается. Поэтому удобнее изменить if, так, чтобы в нем не было НЕ",
+                "lines": [
+                    25,
+                    28
+                ],
                 "date": "2024-08-05T10:06:12Z"
-            },
-            {
-                "filename": "src/main/java/faang/school/godbless/grouping_users_by_age/User.java",
-                "code": "@@ -0,0 +1,39 @@\n+package faang.school.godbless.grouping_users_by_age;\n+\n+\n+import lombok.AllArgsConstructor;\n+import lombok.EqualsAndHashCode;\n+import lombok.Getter;\n+import lombok.Setter;\n+import lombok.ToString;\n+\n+import java.util.ArrayList;\n+import java.util.HashMap;\n+import java.util.List;\n+import java.util.Map;\n+\n+@Getter\n+@Setter\n+@AllArgsConstructor\n+public class User {\n+    private String name;\n+    private int age;\n+    private String placeOfWork;\n+    private String address;\n+\n+    public static Map<Integer, List<User>> groupUsers(List<User> users) {\n+        Map<Integer, List<User>> groupedUsers = new HashMap<>();\n+\n+        for (User user : users) {\n+            if (!groupedUsers.containsKey(user.getAge())) {",
-                "comment": "Переделал",
-                "date": "2024-08-05T10:23:31Z"
             }
         ]
     },
@@ -298,9 +375,13 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/faang/school/godbless/Kate/BJS2_7540_7844/User.java",
+                "file": "src/main/java/faang/school/godbless/Kate/BJS2_7540_7844/User.java",
                 "code": "@@ -0,0 +1,64 @@\n+package faang.school.godbless.Kate.BJS2_7540_7844;\n+\n+import java.util.ArrayList;\n+import java.util.Arrays;\n+import java.util.HashMap;\n+import java.util.HashSet;\n+import java.util.Set;\n+\n+public class User {\n+    private String name;\n+    private int age;\n+    private String job;\n+    private String address;\n+\n+    private Set<String> VALID_JOBS = new HashSet<>(Arrays.asList(\"Google\", \"Uber\", \"Amazon\"));\n+\n+    private Set<String> VALID_ADDRESSES = new HashSet<>(Arrays.asList(\"London\", \"NY\", \"Amsterdam\"));\n+\n+    public static ArrayList<User> users = new ArrayList<>();\n+\n+    public User(String name, int age, String job, String address) {\n+        try {\n+            if (name.isEmpty() || age<18 || !(VALID_JOBS.contains(job)) ||",
-                "comment": "Для каждой проверки нужно кидать отдельный эксепшен, с сообщением - что именно пошло не так. Так как сейчас у тебя метод будет падать, а почему - непонятно. Исправь это.",
+                "suggestion": "Для каждой проверки нужно кидать отдельный эксепшен, с сообщением - что именно пошло не так. Так как сейчас у тебя метод будет падать, а почему - непонятно. Исправь это.",
+                "lines": [
+                    20,
+                    23
+                ],
                 "date": "2024-06-07T23:49:15Z"
             }
         ]
@@ -340,15 +421,23 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang/bjs2_34844/service/ErrMessageValidate.java",
+                "file": "src/main/java/school/faang/bjs2_34844/service/ErrMessageValidate.java",
                 "code": "@@ -0,0 +1,7 @@\n+package school.faang.bjs2_34844.service;\n+\n+public enum ErrMessageValidate {\n+    TYPE_NOTIFICATION_IS_NULL,\n+    HANDLER_IS_NULL,\n+    NOTIFICATION_IS_NULL",
-                "comment": "Давай эти лучше уберем. Когда этот enum разрастется в большом приложении, то в нем невозможно будет ориентироваться. Это не очень хорошая практика",
+                "suggestion": "Давай эти лучше уберем. Когда этот enum разрастется в большом приложении, то в нем невозможно будет ориентироваться. Это не очень хорошая практика",
+                "lines": [
+                    3,
+                    6
+                ],
                 "date": "2024-10-14T08:50:34Z"
             },
             {
-                "filename": "src/main/java/school/faang/bjs2_34844/service/ValidatorNotificationManager.java",
+                "file": "src/main/java/school/faang/bjs2_34844/service/ValidatorNotificationManager.java",
                 "code": "@@ -0,0 +1,26 @@\n+package school.faang.bjs2_34844.service;\n+\n+import java.util.NoSuchElementException;\n+import java.util.function.Consumer;\n+\n+public class ValidatorNotificationManager {\n+     void validateNotNull(Object object, ErrMessageValidate errMessage) {",
-                "comment": "Почему все методы default?",
+                "suggestion": "Почему все методы default?",
+                "lines": [
+                    4,
+                    7
+                ],
                 "date": "2024-10-14T08:50:34Z"
             }
         ]
@@ -372,9 +461,13 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang/java/lambda/meta/NotificationManager.java",
+                "file": "src/main/java/school/faang/java/lambda/meta/NotificationManager.java",
                 "code": "@@ -0,0 +1,21 @@\n+package school.faang.java.lambda.meta;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    private final Map<String, Consumer<Notification>> notificationConsumerMap;\n+\n+    {",
-                "comment": "Зачем нам этот блок, если мы можем прям в поле сразу добавить значение? Объем кода станет меньше",
+                "suggestion": "Зачем нам этот блок, если мы можем прям в поле сразу добавить значение? Объем кода станет меньше",
+                "lines": [
+                    7,
+                    10
+                ],
                 "date": "2024-10-14T08:47:44Z"
             }
         ]
@@ -402,15 +495,23 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang/BJS2_34767/NotificationManager.java",
+                "file": "src/main/java/school/faang/BJS2_34767/NotificationManager.java",
                 "code": "@@ -0,0 +1,53 @@\n+package school.faang.BJS2_34767;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.Objects;\n+import java.util.Set;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    private static final Map<NotificationType, Consumer<Notification>> NOTIFICATION_HANDLER = new HashMap<>();",
-                "comment": "Почему это static? Разве я не могу создать несколько менеджеров нотификаций с разными наборами обработчиков? По-моему, это просто поле должно быть",
+                "suggestion": "Почему это static? Разве я не могу создать несколько менеджеров нотификаций с разными наборами обработчиков? По-моему, это просто поле должно быть",
+                "lines": [
+                    7,
+                    10
+                ],
                 "date": "2024-10-12T04:22:28Z"
             },
             {
-                "filename": "src/main/java/school/faang/BJS2_34767/NotificationManager.java",
+                "file": "src/main/java/school/faang/BJS2_34767/NotificationManager.java",
                 "code": "@@ -0,0 +1,53 @@\n+package school.faang.BJS2_34767;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.Objects;\n+import java.util.Set;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    private static final Map<NotificationType, Consumer<Notification>> NOTIFICATION_HANDLER = new HashMap<>();\n+    private static final Set<String> FORBIDDEN_WORDS = Set.of(\"Дурак\", \"Глупый\", \"Толстый\", \"Плохой\");\n+    private static final String ALLOWED_WORD = \"Учиться\";\n+\n+    void registerHandler(NotificationType type, Consumer<Notification> handler) {",
-                "comment": "Почему методы имеют default модификатор? Это публичный API этого класса. Почему он доступен только в пределах пакета?",
+                "suggestion": "Почему методы имеют default модификатор? Это публичный API этого класса. Почему он доступен только в пределах пакета?",
+                "lines": [
+                    11,
+                    14
+                ],
                 "date": "2024-10-12T04:22:28Z"
             }
         ]
@@ -434,9 +535,13 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/school/faang_sprint_2/meta_universe/NotificationManager.java",
+                "file": "src/main/java/school/faang_sprint_2/meta_universe/NotificationManager.java",
                 "code": "@@ -0,0 +1,18 @@\n+package school.faang_sprint_2.meta_universe;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+\n+    Map<String, Consumer<Notification>> notifications = new HashMap<>();",
-                "comment": "Нет модификатора доступа",
+                "suggestion": "Нет модификатора доступа",
+                "lines": [
+                    6,
+                    9
+                ],
                 "date": "2024-10-11T18:11:32Z"
             }
         ]
@@ -460,21 +565,33 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/bjs2_33401/NotificationManager.java",
+                "file": "src/main/java/bjs2_33401/NotificationManager.java",
                 "code": "@@ -0,0 +1,53 @@\n+package bjs2_33401;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.Set;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    public static Map<String, Consumer<Notification>> notificationTypeResponse = new HashMap<>();\n+    public static Set<String> unacceptableWords = Set.of(\"drugs\", \"alcohol\");",
-                "comment": "Выглядит так, что это константа общая для всех объектов. Тогда final и большими буквами",
+                "suggestion": "Выглядит так, что это константа общая для всех объектов. Тогда final и большими буквами",
+                "lines": [
+                    7,
+                    10
+                ],
                 "date": "2024-10-10T19:53:16Z"
             },
             {
-                "filename": "src/main/java/bjs2_33401/NotificationManager.java",
+                "file": "src/main/java/bjs2_33401/NotificationManager.java",
                 "code": "@@ -0,0 +1,53 @@\n+package bjs2_33401;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.Set;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    public static Map<String, Consumer<Notification>> notificationTypeResponse = new HashMap<>();",
-                "comment": "А почему я не могу создать несколько объектов NotificationManager с разными наборами обработчиков? Зачем тут static?\r\n\r\nПоле называется вообще не сообразно тому, что в этой мапе хранится. \"Тип ответа нотификаций\". Разве в мапе это лежит?",
+                "suggestion": "А почему я не могу создать несколько объектов NotificationManager с разными наборами обработчиков? Зачем тут static?\r\n\r\nПоле называется вообще не сообразно тому, что в этой мапе хранится. \"Тип ответа нотификаций\". Разве в мапе это лежит?",
+                "lines": [
+                    6,
+                    9
+                ],
                 "date": "2024-10-10T19:53:16Z"
             },
             {
-                "filename": "src/main/java/bjs2_33401/NotificationManager.java",
+                "file": "src/main/java/bjs2_33401/NotificationManager.java",
                 "code": "@@ -0,0 +1,53 @@\n+package bjs2_33401;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.Set;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    public static Map<String, Consumer<Notification>> notificationTypeResponse = new HashMap<>();\n+    public static Set<String> unacceptableWords = Set.of(\"drugs\", \"alcohol\");\n+\n+    public void registerHandler(String type, Consumer<Notification> consumer) {\n+        notificationTypeResponse.put(type, consumer);\n+    }\n+\n+    public void sendNotification(Notification notification) {\n+        preprocessNotificationMessage(notification, 20);\n+        notificationTypeResponse.get(notification.getType()).accept(notification);\n+    }\n+\n+    public void preprocessNotificationMessage(Notification notification, int maxWords) {\n+        if (isLongMessage(notification, maxWords)) {\n+            shortenNotificationMessage(notification, maxWords);\n+        }\n+        blurUnacceptableWords(notification);\n+    }\n+\n+    public boolean isLongMessage(Notification notification, int maxWords) {\n+        return notification.getMessage().split(\" \").length > maxWords;\n+    }\n+\n+    // Логика в том, что в реальном мире в самих уведомлениях не бывает\n+    // очень длинных оповещений. Обычно ограничиваются 1-4 строчками.\n+    public void shortenNotificationMessage(Notification notification, int maxWords) {\n+        StringBuilder stringBuilder = new StringBuilder();\n+        String[] messageWords = notification.getMessage().split(\" \");\n+\n+        for (int i = 0; i < maxWords; i++) {\n+            stringBuilder.append(messageWords[i]).append(\" \");\n+        }\n+        notification.setMessage(stringBuilder.toString().trim());\n+    }\n+\n+    public void blurUnacceptableWords(Notification notification) {\n+        String message = notification.getMessage();\n+\n+        for (String word : unacceptableWords) {\n+            // меняем слова без учета регистра\n+            message = message.replaceAll(\"(?i)\" + word, \"***\");\n+        }\n+        notification.setMessage(message);",
-                "comment": "А мы не можем юзерам позволить тоже иметь мапу для таких вот фильтров, как и для обработчиков и добавлять туда лямбдами тоже любые, какие они захотят?\r\nИначе в этом классе эта логика зашита раз и навсегда - нельзя создать пользовательские проверки",
+                "suggestion": "А мы не можем юзерам позволить тоже иметь мапу для таких вот фильтров, как и для обработчиков и добавлять туда лямбдами тоже любые, какие они захотят?\r\nИначе в этом классе эта логика зашита раз и навсегда - нельзя создать пользовательские проверки",
+                "lines": [
+                    57,
+                    60
+                ],
                 "date": "2024-10-10T19:53:16Z"
             }
         ]
@@ -498,15 +615,23 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/ru/kraiush/BJS2_34667/NotificationManager.java",
+                "file": "src/main/java/ru/kraiush/BJS2_34667/NotificationManager.java",
                 "code": "@@ -0,0 +1,21 @@\n+package ru.kraiush.BJS2_34667;\n+\n+import java.util.HashMap;\n+import java.util.Map;\n+import java.util.NoSuchElementException;\n+import java.util.function.Consumer;\n+\n+public class NotificationManager {\n+    private final Map<String, Consumer<Notification>> NOTIFICATIONS = new HashMap<>();",
-                "comment": "Большими буквами только static final. А это просто поле, поэтому notifications\r\nИ вообще: точно ли эта мапа хранит нотификации? Ведь она не их хранит, а мы всей нашей команде разработчиков говорим \"Тут нотификации лежат!\"\r\nНо это ведь обман...",
+                "suggestion": "Большими буквами только static final. А это просто поле, поэтому notifications\r\nИ вообще: точно ли эта мапа хранит нотификации? Ведь она не их хранит, а мы всей нашей команде разработчиков говорим \"Тут нотификации лежат!\"\r\nНо это ведь обман...",
+                "lines": [
+                    6,
+                    9
+                ],
                 "date": "2024-10-09T11:29:51Z"
             },
             {
-                "filename": "src/main/java/ru/kraiush/BJS2_34667/Main.java",
+                "file": "src/main/java/ru/kraiush/BJS2_34667/Main.java",
                 "code": "@@ -0,0 +1,33 @@\n+package ru.kraiush.BJS2_34667;\n+\n+import java.util.NoSuchElementException;\n+\n+public class Main {\n+\n+    public static void main(String[] args) {\n+        NotificationManager notificationManager = new NotificationManager();\n+\n+        notificationManager.registerHandler(\"email\",\n+                (notification -> System.out.println(\"Sending the email: \" + notification.getMessage())));\n+\n+        notificationManager.registerHandler(\"sms\",\n+                (notification -> System.out.println(\"Sending SMS: \" + notification.getMessage())));\n+\n+        notificationManager.registerHandler(\"push\",\n+                (notification -> System.out.println(\"Sending push-notification: \" + notification.getMessage())));\n+\n+        Notification emailNotification = new Notification(\"email\", \"Your email was successfully activated\");\n+        Notification smsNotification = new Notification(\"sms\", \"You have successfully changed your password\");\n+        Notification pushNotification = new Notification(\"push\", \"New post from: John Doe\");\n+        Notification callNotification = new Notification(\"call\", \"Your appointment was scheduled on October 10th\");\n+\n+        try {\n+            notificationManager.sendNotification(emailNotification);\n+            notificationManager.sendNotification(smsNotification);\n+            notificationManager.sendNotification(pushNotification);\n+            notificationManager.sendNotification(callNotification);\n+        } catch (NoSuchElementException e) {\n+            System.out.println(e.getMessage());",
-                "comment": "Всегда лучше печатать полное исключение с его стектрейсом, а не только message. Тогда в логах я смогу быстро понять, откуда именно такое исключение вылетело",
+                "suggestion": "Всегда лучше печатать полное исключение с его стектрейсом, а не только message. Тогда в логах я смогу быстро понять, откуда именно такое исключение вылетело",
+                "lines": [
+                    27,
+                    30
+                ],
                 "date": "2024-10-09T11:29:51Z"
             }
         ]
@@ -766,16 +891,14 @@
         ],
         "comments": [
             {
-                "filename": "src/main/java/meta_universe/NotificationManager.java",
+                "file": "src/main/java/meta_universe/NotificationManager.java",
                 "code": "@@ -0,0 +1,21 @@\n+package meta_universe;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+\n+import java.util.Map;\n+import java.util.function.Consumer;\n+\n+@Getter\n+@AllArgsConstructor\n+public class NotificationManager {\n+    private final Map<String, Consumer<Notification>> HANDLERS;",
-                "comment": "Это не константа, просто поле. Поэтому handlers, маленькими",
+                "suggestion": "Это не константа, просто поле. Поэтому handlers, маленькими",
+                "lines": [
+                    9,
+                    12
+                ],
                 "date": "2024-10-09T11:19:20Z"
-            },
-            {
-                "filename": "src/main/java/meta_universe/NotificationManager.java",
-                "code": "@@ -0,0 +1,21 @@\n+package meta_universe;\n+\n+import lombok.AllArgsConstructor;\n+import lombok.Getter;\n+\n+import java.util.Map;\n+import java.util.function.Consumer;\n+\n+@Getter\n+@AllArgsConstructor\n+public class NotificationManager {\n+    private final Map<String, Consumer<Notification>> HANDLERS;",
-                "comment": "Согласен.",
-                "date": "2024-10-09T11:43:54Z"
             }
         ]
     },
@@ -801,6 +924,7 @@
                 "filename": null,
                 "code": null,
                 "comment": "⚠️ **ОШЫБКА**: Ты создал PR в master ветку. PR-ы можно создавать только в СВОЮ ветку вида {имя_пользователя_discord}. Пожалуйста, нажми кнопку Edit вверху и измени ветку, в которую направляешь PR. После этого красная ошибка ниже должна пропасть, но этот комментарий останется - так и должно быть.",
+                "line_range": null,
                 "date": "2024-08-18T17:41:33Z"
             }
         ]

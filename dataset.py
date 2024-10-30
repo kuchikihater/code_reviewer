@@ -34,7 +34,7 @@ meta_universe_pull_requests = [
 
 file_path = "data.json"
 results = []
-#
+
 # for gruppirovka_pull_request in tqdm(gruppirovka_pull_requests, desc="Processing Gruppirovka Pull Requests"):
 #     time.sleep(5)
 #     # Create a dictionary for the pull request data
@@ -88,10 +88,10 @@ results = []
 # with open(file_path, "w") as outfile:
 #     json.dump(results, outfile, indent=4, ensure_ascii=False)
 
-# with open(file_path, "r") as f:
-#     results = json.load(f)
-#
-#
+with open(file_path, "r") as f:
+    results = json.load(f)
+
+
 # for pull_request in tqdm(results, desc = "Processing Pull Requests"):
 #     # Find the index of the pull request
 #     index = results.index(pull_request)
@@ -101,7 +101,7 @@ results = []
 # with open(file_path, "w") as f:
 #     json.dump(results, f, indent=4, ensure_ascii=False)
 
-#
+
 client = Client()
 dataset_name = "FAANG_Academy_Pull_Reqeusts"
 

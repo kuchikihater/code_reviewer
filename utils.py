@@ -5,6 +5,8 @@ import re
 from dotenv import load_dotenv
 from typing import List, Dict
 from datetime import datetime
+from rich import print as pp
+import os
 
 
 load_dotenv()
@@ -147,7 +149,7 @@ def apply_diff(content, diff) -> str:
 
     for line in diff_lines:
         if line.startswith('@@'):
-            # Parse the line number range from the diff header (e.g., @@ -0,0 +1,29 @@)
+            # parse the line number range from the diff header (e.g., @@ -0,0 +1,29 @@)
             match = re.match(r'@@ -\d+(,\d+)? \+(\d+)(,\d+)? @@', line)
             if match:
                 line_index = int(match.group(2)) - 1  # Starting index for the change
@@ -166,7 +168,23 @@ def apply_diff(content, diff) -> str:
     return '\n'.join(content_lines)
 
 
+def extract_line_range(diff_hunk: str):
+    """
+    Extracts the line range from a diff hunk string.
 
+    Args:
+        diff_hunk (str): The diff hunk string from GitHub's API response.
+
+    Returns:
+        List[int]: A list containing the start and end lines of the code related to the comment.
+    """
+    match = re.search(r'\+(\d+)(?:,\d+)?', diff_hunk)
+    if match:
+        start_line = int(match.group(1))
+        line_count = int(match.group(2)) if len(match.groups()) > 1 else 1
+        end_line = start_line + line_count - 1
+        return [start_line, end_line]
+    return [None, None]
 
 
 
